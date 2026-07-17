@@ -3,8 +3,6 @@ source: https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/sourc
 NhatHub Edition by NoirNF
 ]]
 
--- Đây là Venyx UI (Đã sửa kéo thả cho Mobile)
-
 -- init
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
@@ -162,7 +160,6 @@ do
 		return key
 	end
 
-	-- ====== PHẦN ĐÃ SỬA: HỖ TRỢ KÉO THẢ TRÊN MOBILE ======
 	function utility:DraggingEnabled(frame, parent)
 		parent = parent or frame
 		
@@ -221,7 +218,6 @@ do
 			end
 		end)
 	end
-	-- ====== KẾT THÚC PHẦN SỬA ======
 
 	function utility:DraggingEnded(callback)
 		table.insert(self.ended, callback)
@@ -251,7 +247,7 @@ do
 				Name = "Main",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.25, 0, 0.052435593, 0),
-				Size = UDim2.new(0, 511, 0, 428),
+				Size = UDim2.new(0, 511, 0, 400),
 				Image = "rbxassetid://4641149554",
 				ImageColor3 = themes.Background,
 				ScaleType = Enum.ScaleType.Slice,
@@ -2239,5 +2235,5 @@ do
 	end
 end
 
-print("dino and steffei was here :)")
+print("Venyx Edtion by NoirNF")
 return library
