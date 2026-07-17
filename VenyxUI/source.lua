@@ -3,8 +3,7 @@ source: https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/sourc
 NhatHub Edition by NoirNF
 ]]
 
--- Venyx UI
--- Full version with drag support
+-- Đây là Venyx UI (Đã sửa kéo thả cho Mobile)
 
 -- init
 local player = game.Players.LocalPlayer
@@ -163,42 +162,66 @@ do
 		return key
 	end
 
+	-- ====== PHẦN ĐÃ SỬA: HỖ TRỢ KÉO THẢ TRÊN MOBILE ======
 	function utility:DraggingEnabled(frame, parent)
-
 		parent = parent or frame
-
-		-- stolen from wally or kiriot, kek
+		
 		local dragging = false
 		local dragInput, mousePos, framePos
-
-		frame.InputBegan:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		
+		-- Bắt đầu kéo (hỗ trợ cả chuột và cảm ứng)
+		local function onInputBegan(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or 
+			   input.UserInputType == Enum.UserInputType.Touch then
 				dragging = true
 				mousePos = input.Position
 				framePos = parent.Position
-
-				input.Changed:Connect(function()
-					if input.UserInputState == Enum.UserInputState.End then
-						dragging = false
-					end
-				end)
+				
+				-- Xử lý khi kết thúc kéo trên Mobile
+				if input.UserInputType == Enum.UserInputType.Touch then
+					input.Changed:Connect(function()
+						if input.UserInputState == Enum.UserInputState.End then
+							dragging = false
+						end
+					end)
+				end
 			end
-		end)
-
-		frame.InputChanged:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseMovement then
+		end
+		
+		-- Cập nhật vị trí khi kéo
+		local function onInputChanged(input)
+			if input.UserInputType == Enum.UserInputType.MouseMovement or 
+			   input.UserInputType == Enum.UserInputType.Touch then
 				dragInput = input
 			end
-		end)
-
+		end
+		
+		-- Kết thúc kéo cho PC
+		local function onInputEnded(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				dragging = false
+			end
+		end
+		
+		-- Gán sự kiện
+		frame.InputBegan:Connect(onInputBegan)
+		frame.InputChanged:Connect(onInputChanged)
+		frame.InputEnded:Connect(onInputEnded)
+		
+		-- Xử lý di chuyển
 		input.InputChanged:Connect(function(input)
 			if input == dragInput and dragging then
 				local delta = input.Position - mousePos
-				parent.Position  = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+				parent.Position = UDim2.new(
+					framePos.X.Scale, 
+					framePos.X.Offset + delta.X,
+					framePos.Y.Scale, 
+					framePos.Y.Offset + delta.Y
+				)
 			end
 		end)
-
 	end
+	-- ====== KẾT THÚC PHẦN SỬA ======
 
 	function utility:DraggingEnded(callback)
 		table.insert(self.ended, callback)
@@ -301,28 +324,7 @@ do
 		})
 
 		utility:InitializeKeybind()
-		
-		-- ===== DRAG SUPPORT =====
-		-- Kéo từ thanh tiêu đề (TopBar)
 		utility:DraggingEnabled(container.Main.TopBar, container.Main)
-		
-		-- Kéo từ thanh Pages (bên trái)
-		utility:DraggingEnabled(container.Main.Pages, container.Main)
-		
-		-- [TÙY CHỌN] Kéo từ toàn bộ UI (bỏ comment nếu muốn)
-		-- utility:DraggingEnabled(container.Main, container.Main)
-		
-		-- Tạo vùng kéo riêng trên toàn bộ UI nhưng không ảnh hưởng đến nút bấm
-		local dragArea = utility:Create("Frame", {
-			Name = "DragArea",
-			Parent = container.Main,
-			BackgroundTransparency = 1,
-			Size = UDim2.new(1, 0, 0, 38),
-			Position = UDim2.new(0, 0, 0, 0),
-			ZIndex = 6
-		})
-		utility:DraggingEnabled(dragArea, container.Main)
-		-- ===== END DRAG SUPPORT =====
 
 		return setmetatable({
 			container = container,
@@ -2237,5 +2239,5 @@ do
 	end
 end
 
-print("Edition by Noir")
+print("dino and steffei was here :)")
 return library
