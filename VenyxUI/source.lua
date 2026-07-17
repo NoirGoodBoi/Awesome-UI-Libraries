@@ -3,6 +3,9 @@ source: https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/sourc
 NhatHub Edition by NoirNF
 ]]
 
+-- Venyx UI
+-- Full version with drag support
+
 -- init
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
@@ -299,8 +302,27 @@ do
 
 		utility:InitializeKeybind()
 		
-		-- THÊM DRAG CHO UI CHÍNH (Kéo bằng thanh tiêu đề)
+		-- ===== DRAG SUPPORT =====
+		-- Kéo từ thanh tiêu đề (TopBar)
 		utility:DraggingEnabled(container.Main.TopBar, container.Main)
+		
+		-- Kéo từ thanh Pages (bên trái)
+		utility:DraggingEnabled(container.Main.Pages, container.Main)
+		
+		-- [TÙY CHỌN] Kéo từ toàn bộ UI (bỏ comment nếu muốn)
+		-- utility:DraggingEnabled(container.Main, container.Main)
+		
+		-- Tạo vùng kéo riêng trên toàn bộ UI nhưng không ảnh hưởng đến nút bấm
+		local dragArea = utility:Create("Frame", {
+			Name = "DragArea",
+			Parent = container.Main,
+			BackgroundTransparency = 1,
+			Size = UDim2.new(1, 0, 0, 38),
+			Position = UDim2.new(0, 0, 0, 0),
+			ZIndex = 6
+		})
+		utility:DraggingEnabled(dragArea, container.Main)
+		-- ===== END DRAG SUPPORT =====
 
 		return setmetatable({
 			container = container,
@@ -2215,5 +2237,5 @@ do
 	end
 end
 
-print("edtion by Noir")
+print("Edition by Noir")
 return library
