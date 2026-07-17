@@ -1,6 +1,6 @@
 --[[ 
-source: https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/source.lua
-NhatHub Edition by NoirNF
+    source: https://raw.githubusercontent.com/Stefanuk12/Venyx-UI-Library/main/source.lua
+    Venyx Edition for NhatHub by NoirNF
 ]]
 
 -- init
@@ -19,14 +19,148 @@ local utility = {}
 -- themes
 local objects = {}
 local themes = {
-	Background = Color3.fromRGB(24, 24, 24),
-	Glow = Color3.fromRGB(0, 0, 0),
-	Accent = Color3.fromRGB(10, 10, 10),
-	LightContrast = Color3.fromRGB(20, 20, 20),
-	DarkContrast = Color3.fromRGB(14, 14, 14),
-	TextColor = Color3.fromRGB(255, 255, 255)
+    Background = Color3.fromRGB(20, 0, 5),
+    Glow = Color3.fromRGB(70, 0, 20),
+    Accent = Color3.fromRGB(30, 0, 10),
+    LightContrast = Color3.fromRGB(50, 10, 15),
+    DarkContrast = Color3.fromRGB(25, 0, 5),
+    TextColor = Color3.fromRGB(255, 200, 200),
 }
 
+-- ====== LUCIDE ICONS DATABASE ======
+local lucide = {
+	-- Common
+	["home"] = "10109508175",
+	["search"] = "10109366756",
+	["settings"] = "10109618255",
+	["user"] = "10109639052",
+	["users"] = "10109644853",
+	["plus"] = "10109549449",
+	["minus"] = "10109520427",
+	["x"] = "10109667571",
+	["check"] = "10109422995",
+	["chevron-down"] = "10109439253",
+	["chevron-up"] = "10109427026",
+	["chevron-left"] = "10109432110",
+	["chevron-right"] = "10109436501",
+	["arrow-up"] = "10109399827",
+	["arrow-down"] = "10109380923",
+	["arrow-left"] = "10109388176",
+	["arrow-right"] = "10109392975",
+	["menu"] = "10109515516",
+	["more-horizontal"] = "10109524982",
+	["more-vertical"] = "10109541332",
+	
+	-- Actions
+	["edit"] = "10109450234",
+	["trash"] = "10109649760",
+	["copy"] = "10109444313",
+	["clipboard"] = "10109427814",
+	["save"] = "10109586826",
+	["download"] = "10109446342",
+	["upload"] = "10109657514",
+	["share"] = "10109603694",
+	["link"] = "10109505161",
+	["external-link"] = "10109454547",
+	
+	-- Media
+	["play"] = "10109545718",
+	["pause"] = "10109539736",
+	["volume-2"] = "10109664097",
+	["volume-x"] = "10109669283",
+	["music"] = "10109529760",
+	["camera"] = "10109408517",
+	["image"] = "10109479479",
+	["video"] = "10109661266",
+	
+	-- Files
+	["file"] = "10109460940",
+	["folder"] = "10109466506",
+	["archive"] = "10109394415",
+	["download"] = "10109446342",
+	
+	-- Communication
+	["mail"] = "10109512270",
+	["phone"] = "10109542831",
+	["message-circle"] = "10109516568",
+	["message-square"] = "10109524573",
+	["send"] = "10109599769",
+	
+	-- Weather
+	["sun"] = "10109639100",
+	["moon"] = "10109521716",
+	["cloud"] = "10109435109",
+	["cloud-rain"] = "10109429736",
+	["snowflake"] = "10109608124",
+	
+	-- Misc
+	["heart"] = "10109476892",
+	["star"] = "10109611799",
+	["flag"] = "10109464205",
+	["clock"] = "10109434467",
+	["calendar"] = "10109403745",
+	["map-pin"] = "10109513874",
+	["compass"] = "10109440942",
+	["globe"] = "10109473894",
+	["lock"] = "10109509763",
+	["unlock"] = "10109652736",
+	["key"] = "10109493133",
+	["shield"] = "10109603425",
+	["bell"] = "10109406403",
+	["alert-circle"] = "10109395315",
+	["alert-triangle"] = "10109390467",
+	["info"] = "10109483547",
+	["help-circle"] = "10109478135",
+	
+	-- Gaming
+	["gamepad"] = "10109472700",
+	["joystick"] = "10109490083",
+	["dice"] = "10109447351",
+	["trophy"] = "10109649699",
+	
+	-- Development
+	["code"] = "10109439786",
+	["terminal"] = "10109648269",
+	["cpu"] = "10109445137",
+	["database"] = "10109445732",
+	["server"] = "10109602596",
+	
+	-- Arrows
+	["arrow-up-circle"] = "10109402672",
+	["arrow-down-circle"] = "10109387481",
+	["arrow-left-circle"] = "10109389647",
+	["arrow-right-circle"] = "10109396020",
+	
+	-- Special
+	["github"] = "10109475013",
+	["discord"] = "10109448408",
+	["twitter"] = "10109655955",
+	["youtube"] = "10109672303",
+	["twitch"] = "10109652263",
+	["instagram"] = "10109484433",
+	["facebook"] = "10109458983",
+}
+
+-- ====== HELPER FOR LUCIDE ICONS ======
+function utility:GetIcon(name, size, color)
+	size = size or 16
+	color = color or themes.TextColor
+	
+	local id = lucide[name:lower()]
+	if not id then
+		warn("Lucide icon not found: " .. name)
+		return nil
+	end
+	
+	return utility:Create("ImageLabel", {
+		BackgroundTransparency = 1,
+		Size = UDim2.new(0, size, 0, size),
+		Image = "rbxassetid://" .. id,
+		ImageColor3 = color,
+	})
+end
+
+-- ====== REST OF UTILITY ======
 do
 	function utility:Create(instance, properties, children)
 		local object = Instance.new(instance)
@@ -34,7 +168,7 @@ do
 		for i, v in pairs(properties or {}) do
 			object[i] = v
 
-			if typeof(v) == "Color3" then -- save for theme changer later
+			if typeof(v) == "Color3" then
 				local theme = utility:Find(themes, v)
 
 				if theme then
@@ -62,7 +196,7 @@ do
 		return true
 	end
 
-	function utility:Find(table, value) -- table.find doesn't work for dictionaries
+	function utility:Find(table, value)
 		for i, v in  pairs(table) do
 			if v == value then
 				return i
@@ -148,25 +282,25 @@ do
 		}
 	end
 
-	function utility:KeyPressed() -- yield until next key is pressed
+	function utility:KeyPressed()
 		local key = input.InputBegan:Wait()
 
 		while key.UserInputType ~= Enum.UserInputType.Keyboard	 do
 			key = input.InputBegan:Wait()
 		end
 
-		wait() -- overlapping connection
+		wait()
 
 		return key
 	end
 
+	-- ====== DRAGGING ENABLED (SUPPORTS MOBILE) ======
 	function utility:DraggingEnabled(frame, parent)
 		parent = parent or frame
 		
 		local dragging = false
 		local dragInput, mousePos, framePos
 		
-		-- Bắt đầu kéo (hỗ trợ cả chuột và cảm ứng)
 		local function onInputBegan(input)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 or 
 			   input.UserInputType == Enum.UserInputType.Touch then
@@ -174,7 +308,6 @@ do
 				mousePos = input.Position
 				framePos = parent.Position
 				
-				-- Xử lý khi kết thúc kéo trên Mobile
 				if input.UserInputType == Enum.UserInputType.Touch then
 					input.Changed:Connect(function()
 						if input.UserInputState == Enum.UserInputState.End then
@@ -185,7 +318,6 @@ do
 			end
 		end
 		
-		-- Cập nhật vị trí khi kéo
 		local function onInputChanged(input)
 			if input.UserInputType == Enum.UserInputType.MouseMovement or 
 			   input.UserInputType == Enum.UserInputType.Touch then
@@ -193,19 +325,16 @@ do
 			end
 		end
 		
-		-- Kết thúc kéo cho PC
 		local function onInputEnded(input)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 then
 				dragging = false
 			end
 		end
 		
-		-- Gán sự kiện
 		frame.InputBegan:Connect(onInputBegan)
 		frame.InputChanged:Connect(onInputChanged)
 		frame.InputEnded:Connect(onInputEnded)
 		
-		-- Xử lý di chuyển
 		input.InputChanged:Connect(function(input)
 			if input == dragInput and dragging then
 				local delta = input.Position - mousePos
@@ -227,7 +356,7 @@ end
 
 -- classes
 
-local library = {} -- main
+local library = {}
 local page = {}
 local section = {}
 
@@ -247,7 +376,7 @@ do
 				Name = "Main",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.25, 0, 0.052435593, 0),
-				Size = UDim2.new(0, 511, 0, 400),
+				Size = UDim2.new(0, 511, 0, 428),
 				Image = "rbxassetid://4641149554",
 				ImageColor3 = themes.Background,
 				ScaleType = Enum.ScaleType.Slice,
@@ -302,7 +431,7 @@ do
 					ScaleType = Enum.ScaleType.Slice,
 					SliceCenter = Rect.new(4, 4, 296, 296)
 				}, {
-					utility:Create("TextLabel", { -- title
+					utility:Create("TextLabel", {
 						Name = "Title",
 						AnchorPoint = Vector2.new(0, 0.5),
 						BackgroundTransparency = 1,
@@ -396,7 +525,7 @@ do
 		}, page)
 	end
 
-	function section.new(page, title)
+	function section.new(page, title, icon)
 		local container = utility:Create("ImageLabel", {
 			Name = title,
 			Parent = page.container,
@@ -436,6 +565,18 @@ do
 			})
 		})
 
+		-- Add icon to section if provided
+		if icon then
+			local iconLabel = utility:GetIcon(icon, 14, themes.TextColor)
+			if iconLabel then
+				iconLabel.Name = "Icon"
+				iconLabel.AnchorPoint = Vector2.new(0, 0.5)
+				iconLabel.Position = UDim2.new(0, 0, 0.5, 0)
+				iconLabel.Parent = container.Container.Title
+				container.Container.Title.Position = UDim2.new(0, 20, 0, 0)
+			end
+		end
+
 		return setmetatable({
 			page = page,
 			container = container.Container,
@@ -460,8 +601,8 @@ do
 		return page
 	end
 
-	function page:addSection(...)
-		local section = section.new(self, ...)
+	function page:addSection(title, icon)
+		local section = section.new(self, title, icon)
 
 		table.insert(self.sections, section)
 
@@ -476,7 +617,7 @@ do
 		for property, objects in pairs(objects[theme]) do
 			for i, object in pairs(objects) do
 				if not object.Parent or (object.Name == "Button" and object.Parent.Name == "ColorPicker") then
-					objects[i] = nil -- i can do this because weak tables :D
+					objects[i] = nil
 				else
 					object[property] = color3
 				end
@@ -528,12 +669,10 @@ do
 
 	function library:Notify(title, text, callback)
 
-		-- overwrite last notification
 		if self.activeNotification then
 			self.activeNotification = self.activeNotification()
 		end
 
-		-- standard create
 		local notification = utility:Create("ImageLabel", {
 			Name = "Notification",
 			Parent = self.container,
@@ -607,10 +746,8 @@ do
 			})
 		})
 
-		-- dragging
 		utility:DraggingEnabled(notification)
 
-		-- position and size
 		title = title or "Notification"
 		text = text or ""
 
@@ -632,7 +769,6 @@ do
 			Position = UDim2.new(1, 0, 0, 0)
 		}, 0.2)
 
-		-- callbacks
 		local active = true
 		local close = function()
 
@@ -686,7 +822,8 @@ do
 		end)
 	end
 
-	function section:addButton(title, callback)
+	-- ====== SECTION WITH LUCIDE ICON SUPPORT ======
+	function section:addButton(title, callback, icon)
 		local button = utility:Create("ImageButton", {
 			Name = "Button",
 			Parent = self.container,
@@ -712,8 +849,21 @@ do
 			})
 		})
 
+		-- Add icon to button if provided
+		if icon then
+			local iconLabel = utility:GetIcon(icon, 14, themes.TextColor)
+			if iconLabel then
+				iconLabel.Name = "Icon"
+				iconLabel.AnchorPoint = Vector2.new(0, 0.5)
+				iconLabel.Position = UDim2.new(0, 10, 0.5, 0)
+				iconLabel.ImageTransparency = 0.4
+				iconLabel.Parent = button
+				button.Title.Position = UDim2.new(0, 30, 0, 0)
+				button.Title.TextXAlignment = Enum.TextXAlignment.Left
+			end
+		end
+
 		table.insert(self.modules, button)
-		--self:Resize()
 
 		local text = button.Title
 		local debounce
@@ -724,7 +874,6 @@ do
 				return
 			end
 
-			-- animation
 			utility:Pop(button, 10)
 
 			debounce = true
@@ -746,7 +895,8 @@ do
 		return button
 	end
 
-	function section:addToggle(title, default, callback)
+	-- ====== TOGGLE WITH LUCIDE ICON SUPPORT ======
+	function section:addToggle(title, default, callback, icon)
 		local toggle = utility:Create("ImageButton", {
 			Name = "Toggle",
 			Parent = self.container,
@@ -799,8 +949,20 @@ do
 			})
 		})
 
+		-- Add icon to toggle if provided
+		if icon then
+			local iconLabel = utility:GetIcon(icon, 14, themes.TextColor)
+			if iconLabel then
+				iconLabel.Name = "Icon"
+				iconLabel.AnchorPoint = Vector2.new(0, 0.5)
+				iconLabel.Position = UDim2.new(0, 10, 0.5, 0)
+				iconLabel.ImageTransparency = 0.4
+				iconLabel.Parent = toggle
+				toggle.Title.Position = UDim2.new(0, 30, 0, 0.5)
+			end
+		end
+
 		table.insert(self.modules, toggle)
-		--self:Resize()
 
 		local active = default
 		local this = {}
@@ -842,6 +1004,7 @@ do
 		})
 	end
 
+	-- ====== OTHER COMPONENTS (unchanged but keep for completeness) ======
 	function section:addTextbox(title, default, callback)
 		local textbox = utility:Create("ImageButton", {
 			Name = "Textbox",
@@ -896,7 +1059,6 @@ do
 		})
 
 		table.insert(self.modules, textbox)
-		--self:Resize()
 
 		local button = textbox.Button
 		local input = button.Textbox
@@ -920,7 +1082,7 @@ do
 
 		input:GetPropertyChangedSignal("Text"):Connect(function()
 
-			if button.ImageTransparency == 0 and (button.Size == UDim2.new(0, 200, 0, 16) or button.Size == UDim2.new(0, 100, 0, 16)) then -- i know, i dont like this either
+			if button.ImageTransparency == 0 and (button.Size == UDim2.new(0, 200, 0, 16) or button.Size == UDim2.new(0, 100, 0, 16)) then
 				utility:Pop(button, 10)
 			end
 
@@ -1003,7 +1165,6 @@ do
 		})
 
 		table.insert(self.modules, keybind)
-		--self:Resize()
 
 		local text = keybind.Button.Text
 		local button = keybind.Button
@@ -1032,11 +1193,11 @@ do
 
 			animate()
 
-			if self.binds[keybind].connection then -- unbind
+			if self.binds[keybind].connection then
 				return self:updateKeybind(keybind)
 			end
 
-			if text.Text == "None" then -- new bind
+			if text.Text == "None" then
 				text.Text = "..."
 
 				local key = utility:KeyPressed()
@@ -1209,7 +1370,7 @@ do
 						Size = UDim2.new(0, 2, 1, 0),
 						ZIndex = 2
 					}),
-					utility:Create("UIGradient", { -- rainbow canvas
+					utility:Create("UIGradient", {
 						Color = ColorSequence.new({
 							ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
 							ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 255, 0)),
@@ -1360,7 +1521,6 @@ do
 
 		utility:DraggingEnabled(tab)
 		table.insert(self.modules, colorpicker)
-		--self:Resize()
 
 		local allowed = {
 			[""] = true
@@ -1413,7 +1573,7 @@ do
 			end
 		end
 
-		for i, container in pairs(tab.Container.Inputs:GetChildren()) do -- i know what you are about to say, so shut up
+		for i, container in pairs(tab.Container.Inputs:GetChildren()) do
 			if container:IsA("ImageLabel") then
 				local textbox = container.Textbox
 				local focused
@@ -1464,8 +1624,8 @@ do
 					rgb[prop] = color3[prop:upper()] * 255
 				end
 
-				self:updateColorPicker(colorpicker, nil, {hue, sat, brightness}) -- roblox is literally retarded
-				utility:Tween(canvas.Cursor, {Position = UDim2.new(sat, 0, 1 - brightness, 0)}, 0.1) -- overwrite
+				self:updateColorPicker(colorpicker, nil, {hue, sat, brightness})
+				utility:Tween(canvas.Cursor, {Position = UDim2.new(sat, 0, 1 - brightness, 0)}, 0.1)
 
 				callback(color3)
 				utility:Wait()
@@ -1484,16 +1644,15 @@ do
 					rgb[prop] = color3[prop:upper()] * 255
 				end
 
-				local x = hue -- hue is updated
-				self:updateColorPicker(colorpicker, nil, {hue, sat, brightness}) -- roblox is literally retarded
-				utility:Tween(tab.Container.Color.Select, {Position = UDim2.new(x, 0, 0, 0)}, 0.1) -- overwrite
+				local x = hue
+				self:updateColorPicker(colorpicker, nil, {hue, sat, brightness})
+				utility:Tween(tab.Container.Color.Select, {Position = UDim2.new(x, 0, 0, 0)}, 0.1)
 
 				callback(color3)
 				utility:Wait()
 			end
 		end)
 
-		-- click events
 		local button = colorpicker.Button
 		local toggle, debounce, animate
 
@@ -1533,7 +1692,7 @@ do
 				self.page.library.activePicker = animate
 				lastColor = Color3.fromHSV(hue, sat, brightness)
 
-				local x1, x2 = button.AbsoluteSize.X / 2, 162--tab.AbsoluteSize.X
+				local x1, x2 = button.AbsoluteSize.X / 2, 162
 				local px, py = button.AbsolutePosition.X, button.AbsolutePosition.Y
 
 				tab.ClipsDescendants = true
@@ -1543,7 +1702,6 @@ do
 				tab.Position = UDim2.new(0, x1 + x2 + px, 0, py)
 				utility:Tween(tab, {Size = UDim2.new(0, 162, 0, 169)}, 0.2)
 
-				-- update size and position
 				wait(0.2)
 				tab.ClipsDescendants = false
 
@@ -1666,7 +1824,6 @@ do
 		})
 
 		table.insert(self.modules, slider)
-		--self:Resize()
 
 		local allowed = {
 			[""] = true,
@@ -1813,7 +1970,6 @@ do
 		})
 
 		table.insert(self.modules, dropdown)
-		--self:Resize()
 
 		local this = {}
 		local search = dropdown.Search
@@ -1878,14 +2034,13 @@ do
 
 	function library:SelectPage(page, toggle)
 
-		if toggle and self.focusedPage == page then -- already selected
+		if toggle and self.focusedPage == page then
 			return
 		end
 
 		local button = page.button
 
 		if toggle then
-			-- page button
 			button.Title.TextTransparency = 0
 			button.Title.Font = Enum.Font.GothamSemibold
 
@@ -1893,7 +2048,6 @@ do
 				button.Icon.ImageTransparency = 0
 			end
 
-			-- update selected page
 			local focusedPage = self.focusedPage
 			self.focusedPage = page
 
@@ -1901,7 +2055,6 @@ do
 				self:SelectPage(focusedPage)
 			end
 
-			-- sections
 			local existingSections = focusedPage and #focusedPage.sections or 0
 			local sectionsRequired = #page.sections - existingSections
 
@@ -1911,7 +2064,7 @@ do
 				section.container.Parent.ImageTransparency = 0
 			end
 
-			if sectionsRequired < 0 then -- "hides" some sections
+			if sectionsRequired < 0 then
 				for i = existingSections, #page.sections + 1, -1 do
 					local section = focusedPage.sections[i].container.Parent
 
@@ -1926,7 +2079,7 @@ do
 				focusedPage.container.Visible = false
 			end
 
-			if sectionsRequired > 0 then -- "creates" more section
+			if sectionsRequired > 0 then
 				for i = existingSections + 1, #page.sections do
 					local section = page.sections[i].container.Parent
 
@@ -1948,7 +2101,6 @@ do
 			wait(0.05)
 			page:Resize(true)
 		else
-			-- page button
 			button.Title.Font = Enum.Font.Gotham
 			button.Title.TextTransparency = 0.65
 
@@ -1956,7 +2108,6 @@ do
 				button.Icon.ImageTransparency = 0.65
 			end
 
-			-- sections
 			for i, section in pairs(page.sections) do
 				utility:Tween(section.container.Parent, {Size = UDim2.new(1, -10, 0, 28)}, 0.1)
 				utility:Tween(section.container.Title, {TextTransparency = 1}, 0.1)
@@ -1992,7 +2143,7 @@ do
 		end
 
 		local padding = 4
-		local size = (4 * padding) + self.container.Title.AbsoluteSize.Y -- offset
+		local size = (4 * padding) + self.container.Title.AbsoluteSize.Y
 
 		for i, module in pairs(self.modules) do
 			size = size + module.AbsoluteSize.Y + padding
@@ -2106,7 +2257,7 @@ do
 		local color3
 		local hue, sat, brightness
 
-		if type(color) == "table" then -- roblox is literally retarded x2
+		if type(color) == "table" then
 			hue, sat, brightness = unpack(color)
 			color3 = Color3.fromHSV(hue, sat, brightness)
 		else
@@ -2125,7 +2276,6 @@ do
 				local value = math.clamp(color3[container.Name], 0, 1) * 255
 
 				container.Textbox.Text = math.floor(value)
-				--callback(container.Name:lower(), value)
 			end
 		end
 	end
@@ -2140,7 +2290,7 @@ do
 		local bar = slider.Slider.Bar
 		local percent = (mouse.X - bar.AbsolutePosition.X) / bar.AbsoluteSize.X
 
-		if value then -- support negative ranges
+		if value then
 			percent = (value - min) / (max - min)
 		end
 
@@ -2235,5 +2385,5 @@ do
 	end
 end
 
-print("Venyx Edtion by NoirNF")
+print("currently, noirnf is here :)")
 return library
