@@ -3,8 +3,6 @@
     Venyx Edition for NhatHub by NoirNF
 ]]
 
--- Đây là Venyx UI (Full Version - Theme đen pha đỏ + Lucide Icons + Mobile support + Resize)
-
 -- init
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
@@ -528,7 +526,7 @@ do
 					Position = UDim2.new(1, -18, 1, -18),
 					Size = UDim2.new(0, 18, 0, 18),
 					ZIndex = 10,
-					Image = "rbxassetid://" .. lucide["maximize"],
+					Image = "rbxassetid://116204881270182",
 					ImageColor3 = themes.TextColor,
 					ImageTransparency = 0.4,
 					Rotation = 45,
@@ -2511,5 +2509,4 @@ do
 	end
 end
 
-print("dino and steffei was here :)")
 return library
