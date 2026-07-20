@@ -16,15 +16,14 @@ local tweeninfo = TweenInfo.new
 -- additional
 local utility = {}
 
--- ====== THEME ĐEN PHA ĐỎ ======
 local objects = {}
 local themes = {
-	Background = Color3.fromRGB(15, 0, 0),
-	Glow = Color3.fromRGB(80, 0, 0),
-	Accent = Color3.fromRGB(25, 0, 0),
-	LightContrast = Color3.fromRGB(45, 8, 8),
-	DarkContrast = Color3.fromRGB(20, 0, 0),
-	TextColor = Color3.fromRGB(255, 220, 220),
+	Background = Color3.fromRGB(24, 24, 24),
+	Glow = Color3.fromRGB(0, 0, 0),
+	Accent = Color3.fromRGB(10, 10, 10),
+	LightContrast = Color3.fromRGB(20, 20, 20),
+	DarkContrast = Color3.fromRGB(14, 14, 14),
+	TextColor = Color3.fromRGB(255, 255, 255)
 }
 
 -- ====== LUCIDE ICONS DATABASE ======
