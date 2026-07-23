@@ -1,6 +1,6 @@
 -- U CAN USE TS IN UR ROBLOX GAME --
 
-local NoirUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/NoirStillHere/NUI-Lib/refs/heads/main/src/NoirCK.lua"))() --require(script:WaitForChild('ModuleScript'));
+local NoirUI = loadstring(game:HttpGet(" https://raw.githubusercontent.com/NoirGoodBoi/Awesome-UI-Libraries/refs/heads/main/NeverLose/source.lua))() --require(script:WaitForChild('ModuleScript'));
 
 local Notification = NoirUI:CreateNotification();
 local Logging = NoirUI:CreateLogger();
